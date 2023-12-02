@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon
 
-from task1 import creating_csvfile, write_path
+import task1 
 # from task2 import copy_images as copy
 # from task3 import copy_images as copy_random
 # from task5 import MyIterator
@@ -23,9 +23,6 @@ class Example(QWidget):
         self.setStyleSheet("background: rgb(220, 208, 255); font: 10pt Comic Sans MS")
 
     def initUI(self):
-        self.setGeometry(300, 300, 700, 300)
-        self.setWindowTitle("FLOWERS")
-        self.setWindowIcon(QIcon("WindowIcon.png"))
 
         self.button1 = QPushButton("Select dataset", self)
         self.button1.setStyleSheet("background: rgb(200, 208, 255)")
@@ -58,15 +55,16 @@ class Example(QWidget):
         grid.addWidget(self.button6, 6, 0)
 
         self.setLayout(grid)
+        self.setGeometry(300, 300, 700, 300)
+        self.setWindowTitle("FLOWERS")
+        self.setWindowIcon(QIcon("WindowIcon.png"))
         self.show()
 
     def getDataset(self):
         self.dirlist = QFileDialog.getExistingDirectory(self, 'Select Folder')
 
     def create_csv(self):
-        creating_csvfile("Annotasion1")
-        write_path("Annotasion1", "rose", self.dirlist)
-        write_path("Annotasion1", "tulip", self.dirlist)
+        task1.main(self.dirlist)
 
     def close_event(self, event):
         reply = QMessageBox.question(
