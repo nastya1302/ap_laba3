@@ -25,7 +25,6 @@ def writing_relative_path(name: str, dir: str) -> List[str]:
     and a list of the names of the elements in it. Adds relative paths
     of elements to the list. Returns a list of paths.
     """
-    print("Текущая директория изменилась на folder:", os.getcwd())
     rel_path: str = os.path.relpath(name)
     list_images: List[str] = os.listdir(rel_path)
     rez_paths: List[str] = []
@@ -45,14 +44,14 @@ def creating_csvfile(namecsv: str, names: List[str], path: str):
         filewriter.writerow(["Absolute path", "Relative path", "Class name"])
         for name in names:
                 os.chdir(path)
-                dir = os.path.split(path)[1]
+                dir: str = os.path.split(path)[1]
                 abs_paths: List[str] = writing_absolute_path(name)
                 rel_paths: List[str] = writing_relative_path(name, dir)
                 for abs_path, rel_path in zip(abs_paths, rel_paths):
                     filewriter.writerow([abs_path, rel_path, name])
 
 
-def main(path) -> None:
+def main(path: str) -> None:
     """
     The main() function is supplied with the names of classes
     and the name of the directory. A .csv file with the name "Annotation"

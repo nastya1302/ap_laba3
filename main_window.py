@@ -11,8 +11,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QIcon
 
 import task1 
-# from task2 import copy_images as copy
-# from task3 import copy_images as copy_random
+import task2
+import task3
 # from task5 import MyIterator
 
 
@@ -34,9 +34,11 @@ class Example(QWidget):
 
         self.button3 = QPushButton("Create new dataset and annotasion", self)
         self.button3.setStyleSheet("background: rgb(200, 208, 255)")
+        self.button3.clicked.connect(self.copy)
 
         self.button4 = QPushButton("Create new random dataset and annotasion", self)
         self.button4.setStyleSheet("background: rgb(200, 208, 255)")
+        self.button4.clicked.connect(self.copy_random)
 
         self.button5 = QPushButton("Next rose", self)
         self.button5.setStyleSheet("background: rgb(200, 208, 255)")
@@ -61,24 +63,16 @@ class Example(QWidget):
         self.show()
 
     def getDataset(self):
-        self.dirlist = QFileDialog.getExistingDirectory(self, 'Select Folder')
+        self.dirlist: str = QFileDialog.getExistingDirectory(self, 'Select Folder')
 
     def create_csv(self):
         task1.main(self.dirlist)
 
-    def close_event(self, event):
-        reply = QMessageBox.question(
-            self,
-            "Message",
-            "Are you sure to quit?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
+    def copy(self):
+        task2.main(self.dirlist)
 
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
+    def copy_random(self):
+        task3.main(self.dirlist)
 
 
 def main() -> None:
