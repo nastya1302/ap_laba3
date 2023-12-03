@@ -53,9 +53,7 @@ def creating_csvfile(namecsv: str, names: List[str], path: str):
 
 def main(path: str) -> None:
     """
-    The main() function is supplied with the names of classes
-    and the name of the directory. A .csv file with the name "Annotation"
-    is created and absolute and relative paths are written there alternately from each class.
+    Calls a function to create .csv file.
     """
     creating_csvfile("Annotasion1", ["rose", "tulip"], path)
 
