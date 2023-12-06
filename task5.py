@@ -28,4 +28,4 @@ class MyIterator:
             self.counter += 1
             return path
         else:
-            raise StopIteration
+            return None

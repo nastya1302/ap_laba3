@@ -33,12 +33,13 @@ def writing_relative_path(name: str, dir: str) -> List[str]:
     return rez_paths
 
 
-def creating_csvfile(namecsv: str, names: List[str], path: str):
+def creating_csvfile(namecsv: str, names: List[str], path: str, save_dir: str):
     """
     The function takes as input the name for the .csv file,
     creates a .csv file with the passed name and writes the column headers.
     The function opens a .csv file and writes absolute and relative paths to the desired columns.
     """
+    os.chdir(save_dir)
     with open(namecsv + ".csv", "w", newline="") as f:
         filewriter = csv.writer(f, delimiter=",", lineterminator="\r")
         filewriter.writerow(["Absolute path", "Relative path", "Class name"])
@@ -51,11 +52,11 @@ def creating_csvfile(namecsv: str, names: List[str], path: str):
                     filewriter.writerow([abs_path, rel_path, name])
 
 
-def main(path: str) -> None:
+def main(path: str, save_dir: str) -> None:
     """
     Calls a function to create .csv file.
     """
-    creating_csvfile("Annotasion1", ["rose", "tulip"], path)
+    creating_csvfile("Annotasion", ["rose", "tulip"], path, save_dir)
 
 
 if __name__ == "__main__":

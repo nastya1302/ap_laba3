@@ -5,9 +5,12 @@ from PyQt5.QtWidgets import (
     QFileDialog,
     QPushButton,
     QLabel,
-    QGridLayout
+    QGridLayout,
+    QDialog,
+    QVBoxLayout
 )
 from PyQt5.QtGui import QIcon, QPixmap
+from typing import List
 
 import task1
 import task2
@@ -48,9 +51,6 @@ class Example(QWidget):
         self.button4.setFixedSize(500, 60)
         self.button4.clicked.connect(self.copy_random)
 
-        self.rose_iterator: MyIterator = MyIterator("rose", "dataset1")
-        self.tulip_iterator: MyIterator = MyIterator("tulip", "dataset1")
-
         self.button5 = QPushButton("Next rose", self)
         self.button5.setStyleSheet("background: rgb(200, 208, 255)")
         self.button5.setFixedSize(500, 60)
@@ -75,7 +75,7 @@ class Example(QWidget):
         grid.addWidget(self.label, 0, 1, 4, 1)
 
         self.setLayout(grid)
-        self.setGeometry(300, 300, 1000, 600)
+
         self.setWindowTitle("FLOWERS")
         self.setStyleSheet("background: rgb(220, 208, 255); font: 10pt Comic Sans MS")
         self.setWindowIcon(QIcon("WindowIcon.png"))
@@ -84,44 +84,75 @@ class Example(QWidget):
         """
         Asking the user for the path to the source dataset.
         """
-        self.dirlist: str = QFileDialog.getExistingDirectory(self, "Select Folder")
+        dirlist: str = QFileDialog.getExistingDirectory(self, "Select Folder")
+        self.rose_iterator: MyIterator = MyIterator("rose", dirlist)
+        self.tulip_iterator: MyIterator = MyIterator("tulip", dirlist)
 
     def create_csv(self) -> None:
         """
         Creating csv file for the source dataset.
         """
-        task1.main(self.dirlist)
+        paths: List[str] = self.select_foldef()
+        task1.main(paths[0], paths[1])
 
     def copy(self) -> None:
         """
         Copies dataset 1 to dataset 2 with new names and creates a csv file.
         """
-        task2.main(self.dirlist)
+        paths: List[str] = self.select_foldef()
+        task2.main(paths[0], paths[1])
 
     def copy_random(self) -> None:
         """
         Copies dataset 1 to dataset 3 with random names and creates a csv file.    
         """
-        task3.main(self.dirlist)
+        paths: List[str] = self.select_foldef()
+        task3.main(paths[0], paths[1])
 
     def next_rose(self) -> None:
         """
         By placing the following class image in the window.
         """
-        self.rose_path: str = next(self.rose_iterator)
-        image = QPixmap(self.rose_path)
-        image_rez = image.scaledToWidth(500)
-        self.label.setPixmap(image_rez)
+        rose_path: str = next(self.rose_iterator)
+        if rose_path != None:
+            image = QPixmap(rose_path)
+            image_rez = image.scaledToWidth(500)
+            self.label.setPixmap(image_rez)
+        else:
+            self.end_img()
 
     def next_tulip(self) -> None:
         """
         By placing the following class image in the window.
         """
-        self.tulip_path: str = next(self.tulip_iterator)
-        image = QPixmap(self.tulip_path)
-        image_rez = image.scaledToWidth(500)
-        self.label.setPixmap(image_rez)
-        
+        tulip_path: str = next(self.tulip_iterator)
+        if tulip_path != None:
+            image = QPixmap(tulip_path)
+            image_rez = image.scaledToWidth(500)
+            self.label.setPixmap(image_rez)
+        else:
+            self.end_img()
+
+    def end_img(self) -> None:
+        dlg = QDialog(self)
+        dlg.setWindowTitle("FLOWERS")
+        text = QLabel("The images of this class have ended. You can view images of a different class, or select a different dataset.", dlg)
+        btn = QPushButton('ok', dlg)
+        vbox = QVBoxLayout(dlg)
+        vbox.addStretch(1)
+        vbox.addWidget(text)
+        vbox.addWidget(btn)
+        btn.clicked.connect(dlg.close)
+        dlg.exec()
+
+    def select_foldef(self) -> List[str]:
+        paths: List[str] = []
+        dirlist: str = QFileDialog.getExistingDirectory(self, "Select Folder")
+        save_dir: str = QFileDialog.getExistingDirectory(self, "Select Folder For Save")
+        paths.append(dirlist)
+        paths.append(save_dir)
+        return paths
+
 
 def main() -> None:
     """
