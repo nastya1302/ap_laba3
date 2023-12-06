@@ -33,14 +33,15 @@ def writing_relative_path(name: str, dir: str) -> List[str]:
     return rez_paths
 
 
-def creating_csvfile(namecsv: str, names: List[str], path: str, save_dir: str):
+def creating_csvfile(namecsv: str, names: List[str], path: str, save_dir: str) -> None:
     """
     The function takes as input the name for the .csv file,
     creates a .csv file with the passed name and writes the column headers.
     The function opens a .csv file and writes absolute and relative paths to the desired columns.
     """
     os.chdir(save_dir)
-    with open(namecsv + ".csv", "w", newline="") as f:
+    csvfile: str = namecsv + ".csv" 
+    with open(csvfile, "w", newline="") as f:
         filewriter = csv.writer(f, delimiter=",", lineterminator="\r")
         filewriter.writerow(["Absolute path", "Relative path", "Class name"])
         for name in names:

@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from typing import List
+import os
 
 import task1
 import task2
@@ -84,9 +85,12 @@ class Example(QWidget):
         """
         Asking the user for the path to the source dataset.
         """
-        dirlist: str = QFileDialog.getExistingDirectory(self, "Select Folder")
-        self.rose_iterator: MyIterator = MyIterator("rose", dirlist)
-        self.tulip_iterator: MyIterator = MyIterator("tulip", dirlist)
+        self.dirlist: str = QFileDialog.getExistingDirectory(self, "Select Folder")
+        self.iter()
+
+    def iter(self) -> None:
+        self.rose_iterator: MyIterator = MyIterator("rose", self.dirlist)
+        self.tulip_iterator: MyIterator = MyIterator("tulip", self.dirlist)
 
     def create_csv(self) -> None:
         """
@@ -94,6 +98,7 @@ class Example(QWidget):
         """
         paths: List[str] = self.select_foldef()
         task1.main(paths[0], paths[1])
+        self.message("The annotation have been created.")
 
     def copy(self) -> None:
         """
@@ -101,6 +106,7 @@ class Example(QWidget):
         """
         paths: List[str] = self.select_foldef()
         task2.main(paths[0], paths[1])
+        self.message("The dataset and annotation have been created.")
 
     def copy_random(self) -> None:
         """
@@ -108,6 +114,7 @@ class Example(QWidget):
         """
         paths: List[str] = self.select_foldef()
         task3.main(paths[0], paths[1])
+        self.message("The dataset and annotation have been created.")
 
     def next_rose(self) -> None:
         """
@@ -119,7 +126,9 @@ class Example(QWidget):
             image_rez = image.scaledToWidth(500)
             self.label.setPixmap(image_rez)
         else:
-            self.end_img()
+            self.message("The images of this class have ended.")
+            self.iter()
+            self.next_rose()
 
 
     def next_tulip(self) -> None:
@@ -132,12 +141,14 @@ class Example(QWidget):
             image_rez = image.scaledToWidth(500)
             self.label.setPixmap(image_rez)
         else:
-            self.end_img()
+            self.message("The images of this class have ended.")
+            self.iter()
+            self.next_tulip()
 
-    def end_img(self) -> None:
+    def message(self, text: str) -> None:
         dlg = QDialog(self)
         dlg.setWindowTitle("FLOWERS")
-        text = QLabel("The images of this class have ended. You can view images of a different class, or select a different dataset.", dlg)
+        text = QLabel(text, dlg)
         btn = QPushButton('ok', dlg)
         vbox = QVBoxLayout(dlg)
         vbox.addStretch(1)

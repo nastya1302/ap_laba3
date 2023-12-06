@@ -24,7 +24,7 @@ def copy_images(old_dir: str, names: List[str], save_dir: str) -> None:
         filewriter = csv.writer(f, delimiter=",", lineterminator="\r")
         filewriter.writerow(["Absolute path", "Relative path", "Class name"])    
         for name in names:
-            path: str = os.path.join(os.path.abspath(old_dir), name)
+            path: str = os.path.join(old_dir, name)
             list_images: List[str] = os.listdir(path)
             for img in list_images:
                 new_name: str = f"{random_number[count]}".zfill(5)
@@ -49,9 +49,7 @@ def main(path: str, save_dir: str) -> None:
     from the old directory with the changed name will be copied and their
     new absolute and relative paths will be written to the .csv file at the same time.
     """
-    path_dir = os.path.split(path)
-    os.chdir(path_dir[0])
-    copy_images(path_dir[1], ["rose", "tulip"], save_dir)
+    copy_images(path, ["rose", "tulip"], save_dir)
 
 
 if __name__ == "__main__":
