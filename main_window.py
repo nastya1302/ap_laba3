@@ -121,6 +121,7 @@ class Example(QWidget):
         else:
             self.end_img()
 
+
     def next_tulip(self) -> None:
         """
         By placing the following class image in the window.
