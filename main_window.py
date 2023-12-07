@@ -166,6 +166,9 @@ class Example(QWidget):
             self.next_tulip()
 
     def message(self, text: str) -> None:
+        """
+        Displays a window with the transmitted message.
+        """
         dlg = QDialog(self)
         dlg.setWindowTitle("FLOWERS")
         text = QLabel(text, dlg)
@@ -178,6 +181,9 @@ class Example(QWidget):
         dlg.exec()
 
     def select_foldef(self) -> List[str]:
+        """
+        User's choice of folders.
+        """
         paths: List[str] = []
         dirlist: str = QFileDialog.getExistingDirectory(self, "Select Folder")
         save_dir: str = QFileDialog.getExistingDirectory(self, "Select Folder For Save")
