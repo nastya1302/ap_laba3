@@ -7,11 +7,11 @@ from PyQt5.QtWidgets import (
     QLabel,
     QGridLayout,
     QDialog,
-    QVBoxLayout
+    QVBoxLayout,
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from typing import List
-import os
+from PyQt5.QtCore import Qt
 
 import task1
 import task2
@@ -20,7 +20,6 @@ from task5 import MyIterator
 
 
 class Example(QWidget):
-    
     def __init__(self) -> None:
         """
         Constructor for creating a window.
@@ -65,7 +64,7 @@ class Example(QWidget):
         self.label = QLabel(self)
 
         grid = QGridLayout()
-        grid.setSpacing(10)
+        grid.setSpacing(2)
 
         grid.addWidget(self.button1, 0, 0)
         grid.addWidget(self.button2, 1, 0)
@@ -73,7 +72,7 @@ class Example(QWidget):
         grid.addWidget(self.button4, 3, 0)
         grid.addWidget(self.button5, 4, 1)
         grid.addWidget(self.button6, 5, 1)
-        grid.addWidget(self.label, 0, 1, 4, 1)
+        grid.addWidget(self.label, 0, 1, 4, 1, alignment=Qt.AlignCenter)
 
         self.setLayout(grid)
 
@@ -110,7 +109,7 @@ class Example(QWidget):
 
     def copy_random(self) -> None:
         """
-        Copies dataset 1 to dataset 3 with random names and creates a csv file.    
+        Copies dataset 1 to dataset 3 with random names and creates a csv file.
         """
         paths: List[str] = self.select_foldef()
         task3.main(paths[0], paths[1])
@@ -123,13 +122,12 @@ class Example(QWidget):
         rose_path: str = next(self.rose_iterator)
         if rose_path != None:
             image = QPixmap(rose_path)
-            image_rez = image.scaledToWidth(500)
+            image_rez = image.scaledToHeight(240)
             self.label.setPixmap(image_rez)
         else:
             self.message("The images of this class have ended.")
             self.iter()
             self.next_rose()
-
 
     def next_tulip(self) -> None:
         """
@@ -138,7 +136,7 @@ class Example(QWidget):
         tulip_path: str = next(self.tulip_iterator)
         if tulip_path != None:
             image = QPixmap(tulip_path)
-            image_rez = image.scaledToWidth(500)
+            image_rez = image.scaledToHeight(240)
             self.label.setPixmap(image_rez)
         else:
             self.message("The images of this class have ended.")
@@ -149,7 +147,7 @@ class Example(QWidget):
         dlg = QDialog(self)
         dlg.setWindowTitle("FLOWERS")
         text = QLabel(text, dlg)
-        btn = QPushButton('ok', dlg)
+        btn = QPushButton("ok", dlg)
         vbox = QVBoxLayout(dlg)
         vbox.addStretch(1)
         vbox.addWidget(text)
